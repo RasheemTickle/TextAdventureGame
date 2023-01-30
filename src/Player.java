@@ -22,6 +22,9 @@ public class Player {
         inventory.put(name, item);
 
     }
+    HashMap getInv() {
+        return inventory;
+    }
 
     public Item getItem(String name) {
         return inventory.remove(name);

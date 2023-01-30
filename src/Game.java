@@ -14,26 +14,35 @@ public class Game {
 
     private void createRooms(){
 
-        Room outside = new Room("You are outside of a huge mysterious looking mansion, but the door won't open.", "You look around and the sun glistens in the bright blue sky. This huge white mansion has a weird feeling to it. You look at the green grass and see a key on the ground");
-        Room kitchen = new Room("This is the kitchen where the food is made by a world class chef", "There are awards on the walls around you from cooking competitions. The smell of food fills the air but there is no food or chef anywhere to be found.");
-        Room bowlingAlley = new Room("Woah.. you just walked into a huge bowling alley!", "bowling long description");
-        Room button = new Room("You just stepped into a pitch black lifeless room", "button long description");
-        Room spikes = new Room("That's not good", "spikes long description");
-        Room Transylvania = new Room("Hmmm, this really doesn't seem like a house anymore", "transylvania long description");
-        Room InNOut = new Room("Just maybe there's some food here!", "innout long description");
+        Room outside = new Room("You are outside of a huge mysterious looking mansion, but the door won't open.",
+                 "You look around and the sun glistens in the bright blue sky. This huge white mansion has a weird feeling to it, but the front door is locked. You look at the green grass and see a key on the ground");
+        Room kitchen = new Room("This is the kitchen where the food is made by a world class chef", "There are awards on the walls around you from cooking competitions. " +
+                "The smell of food fills the air but there is no food or chef anywhere to be found.");
+        Room bowlingAlley = new Room("Woah.. you just walked into a huge bowling alley!", "The size of this bowling alley is amazing! The colorful lights and upbeat " +
+                "music fills the room. Maybe some bowling would be fun, try rolling a ball down the lane.");
+        Room button = new Room("You just stepped into a pitch black lifeless room", "The lights suddenly turn on. You are looking at a giant room with lights all " +
+                "pointing at a big red button. What should you do?");
+        Room spikes = new Room("That's not good at all. You fell through a trap door and die by spikes down below. I don't think that was a friendly button. GAME OVER" ,
+                "Game over, restart your game.");
+        Room Transylvania = new Room("Hmmm, this really doesn't seem like a house anymore", "Okay, this mansion is getting really wierd. You are looking at a transylvania of vampires" +
+                "and other scary looking monsters. A vampire daps you up. Looks like they are all friendly!");
+        Room InNOut = new Room("You have just entered an InNOut Burger!", "You made it back to where you live! You win!");
 
 
-        outside.setExit("forward", kitchen);
+        outside.setExit("key", kitchen);
         kitchen.setExit("forward", bowlingAlley);
         bowlingAlley.setExit("forward", button);
+        button.setExit("button", spikes);
         button.setExit("forward", Transylvania);
         Transylvania.setExit("forward", InNOut);
 
         Item obj = new Item();
         Item obj2 = new Item();
+        Item obj3 = new Item();
 
         outside.setItem("key", obj);
         kitchen.setItem("knife", obj2);
+        bowlingAlley.setItem("ball", obj3);
 
 
         currentRoom = outside;
@@ -80,9 +89,13 @@ public class Game {
             case DROP:
                 drop(command);
                 break;
-            case PRESS:
-                press(command);
+            case PUSH:
+                push(command);
                break;
+            case USE:
+                use(command);
+            case ROLL:
+                roll(command);
 
         }
         return wantToQuit;
@@ -104,7 +117,7 @@ public class Game {
         System.out.println(player.getItemString());
     }
 
-    private void goRoom(Command command)
+    public void goRoom(Command command)
     {
         if(!command.hasSecondWord()){
             // if there is no second word, we don't know where to go
@@ -133,10 +146,65 @@ public class Game {
             System.out.println("push what?");
             return;
         }
-        String ke = command.getSecondWord();
 
-        Button pushButton = goRoom(spikes) {
+        String direction = command.getSecondWord();
 
+        //try to leave current room
+        Room nextRoom = currentRoom.getExit(direction);
+
+        if(nextRoom == null){
+            System.out.println("You can't push that!");
+        }
+
+        else{
+            currentRoom = nextRoom;
+            System.out.println(currentRoom.getShortDescription());
+        }
+    }
+    private void roll(Command command) {
+        if(!command.hasSecondWord()) {
+            System.out.println("roll what?");
+            return;
+        }
+
+        String rollBall = command.getSecondWord();
+
+        //try to leave current room
+
+
+        if(rollBall == null){
+            System.out.println("You can't roll that!");
+        }
+        else if(!player.getInv().containsKey("ball")) {
+            System.out.println("You need to grab the ball to roll it");
+        }
+
+        else{
+            currentRoom = nextRoom;
+            System.out.println(currentRoom.getShortDescription());
+        }
+    }
+    private void use(Command command) {
+        if(!command.hasSecondWord()) {
+            System.out.println("use what?");
+            return;
+        }
+
+        String direction = command.getSecondWord();
+
+        //try to leave current room
+        Room nextRoom = currentRoom.getExit(direction);
+
+        if(nextRoom == null){
+            System.out.println("You can't use that!");
+        }
+        else if(!player.getInv().containsKey("key")) {
+            System.out.println("The door is locked, you need a key");
+        }
+
+        else{
+            currentRoom = nextRoom;
+            System.out.println(currentRoom.getShortDescription());
         }
     }
 
@@ -191,7 +259,7 @@ public class Game {
         System.out.println("You find yourself in a crazy random world where you are dying of hunger!");
         System.out.println("Type \\‘help\\\" if you need assistance");
         System.out.println();
-        System.out.println("we will print a long room description here");
+        System.out.println("You have no memory of what happened. You saw a flash of lights and you woke up to the sound of nature. You are not safe, take a look around.");
     }
 
 }
