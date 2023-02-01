@@ -27,8 +27,8 @@ public class Game {
                 "pointing at a big red button. Would pushing it be a good idea?");
         Room spikes = new Room("That's not good at all. You fell through a trap door and die by spikes down below. I don't think that was a friendly button. GAME OVER",
                 "Game over, restart your game.");
-        Room Transylvania = new Room("Hmmm, this really doesn't seem like a house anymore", "Okay, this mansion is getting really wierd. You are looking at a transylvania of vampires" +
-                "and other scary looking monsters. Hopefully you brought a weapon to stab the monsters!");
+        Room Transylvania = new Room("Hmmm, this really doesn't seem like a house anymore", "Okay, this mansion is getting really wierd. You are looking at a transylvania of vampires " +
+                "and other scary looking monsters. Hopefully you brought a weapon to stab the monsters! Use command stab knife");
         Room InNOut = new Room("You have just entered an InNOut Burger!", "You made it back to where you live! You win!");
 
 
@@ -139,7 +139,9 @@ public class Game {
 
         if (nextRoom == null) {
             System.out.println("Can't go this way!");
-        } else {
+        }
+
+        else {
             currentRoom = nextRoom;
             System.out.println(currentRoom.getShortDescription());
 
@@ -184,7 +186,7 @@ public class Game {
             wantToQuit = true;
         }
         else{
-            System.out.println("You just killed the king vampire. You are now the new king of Transylvania!");
+            System.out.println("You just killed the king vampire. You are now the new king of Transylvania! The next room is now open..");
             }
         }
 
@@ -263,7 +265,7 @@ public class Game {
         }
 
 
-        private boolean quit (Command command){
+        private boolean quit (Command command) {
             if (command.hasSecondWord()) {
                 System.out.println("You can't quit " + command.getSecondWord());
                 return false;
@@ -271,8 +273,7 @@ public class Game {
                 return true;
             }
         }
-
-        private void printWelcome () {
+        private void printWelcome() {
             System.out.println();
             System.out.println("Welcome to my text adventure game!");
             System.out.println("You find yourself in a crazy random world where you are dying of hunger!");
